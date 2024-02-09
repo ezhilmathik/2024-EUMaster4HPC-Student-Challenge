@@ -1,3 +1,4 @@
+# Please follow the steps for running the code on MeluXina
 
 # Conjugate gradient method
 
@@ -15,9 +16,15 @@ It is a program which solves a system of equations using the conjugate gradient 
 
 The main program in this project is `conjugate_gradients`, which solves the system. It loads and input dense matrix in row-major format and a right-hand-side from given binary files, performs the conjugate gradient iterations until convergence, and then writes the found solution to a given output binary file. A symmetric positive definite matrix and a right-hand-side can be generated using the `random_spd_system.sh` script and program.
 
+Inorder to test your code on MeluXina, please use the interactive node (for quick checking)
+```
+salloc -A p200301 --res cpudev -q dev -N 1 -t 00:30:00
+```
+
+
 To make the program work, I need to execute this command first
 ```
-module load GCC/13.2.0
+module load intel
 ```
 
 Create a directory for the input and output files
@@ -27,7 +34,7 @@ mkdir io
 
 To compile the program, I use
 ```
-g++ -g -O2 src/conjugate_gradients.cpp -o conjugate_gradients
+icpx -O2 src/conjugate_gradients.cpp -o conjugate_gradients
 ```
 
 To generate a random SPD system of 10000 equations and unknowns, use e.g.
