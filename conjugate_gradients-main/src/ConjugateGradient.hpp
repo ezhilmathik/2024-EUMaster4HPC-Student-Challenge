@@ -21,7 +21,7 @@ class ConjugateGradient{
 };
 
 template<typename FloatingType>
-void solve(const FloatingType * A, const FloatingType * b, FloatingType * x, size_t size, int max_iters, FloatingType rel_error) const
+void ConjugateGradient<FloatingType>::solve(const FloatingType * A, const FloatingType * b, FloatingType * x, size_t size, int max_iters, FloatingType rel_error) const
 {
     FloatingType alpha, beta, bb, rr, rr_new;
     FloatingType * r = new FloatingType[size];
@@ -41,10 +41,10 @@ void solve(const FloatingType * A, const FloatingType * b, FloatingType * x, siz
     for(num_iters = 1; num_iters <= max_iters; num_iters++)
     {
         _melblas->gemv(1.0, A, p, 0.0, Ap, size, size);
-        alpha = rr / dot(p, Ap, size);
+        alpha = rr / _melblas->dot(p, Ap, size);
         _melblas->axpby(alpha, p, 1.0, x, size);
         _melblas->axpby(-alpha, Ap, 1.0, r, size);
-        rr_new = dot(r, r, size);
+        rr_new = _melblas->dot(r, r, size);
         beta = rr_new / rr;
         rr = rr_new;
         if(std::sqrt(rr / bb) < rel_error) { break; }

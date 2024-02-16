@@ -2,7 +2,7 @@
 #define MELBLAS_OMP_HPP
 
 #include <omp.h>
-#include "MelBLAS.hpp"
+#include "MelBLAS_B.hpp"
 
 namespace melblas
 {
@@ -23,11 +23,11 @@ namespace melblas
 
 
     template<typename FloatingType>
-    FloatingType dot(const FloatingType * x, const FloatingType * y, size_t size) const
+    FloatingType MelBLAS_OMP<FloatingType>::dot(const FloatingType * x, const FloatingType * y, size_t size) const
     {
         FloatingType result = 0.0;
 
-        #pragma omp parallel for
+        #pragma omp parallel for reduction(+:result)
         for(size_t i = 0; i < size; i++)
         {
             result += x[i] * y[i];
@@ -36,7 +36,7 @@ namespace melblas
     }
 
     template<typename FloatingType>
-    void axpby(FloatingType alpha, const FloatingType * x, FloatingType beta, FloatingType * y, size_t size) const
+    void MelBLAS_OMP<FloatingType>::axpby(FloatingType alpha, const FloatingType * x, FloatingType beta, FloatingType * y, size_t size) const
     {
         // y = alpha * x + beta * y
 
@@ -48,7 +48,7 @@ namespace melblas
     }
 
     template<typename FloatingType>
-    void gemv(FloatingType alpha, const FloatingType * A, const FloatingType * x, FloatingType beta, FloatingType * y, size_t num_rows, size_t num_cols) const;
+    void MelBLAS_OMP<FloatingType>::gemv(FloatingType alpha, const FloatingType * A, const FloatingType * x, FloatingType beta, FloatingType * y, size_t num_rows, size_t num_cols) const
     {
 
         // y = alpha * A * x + beta * y;
@@ -63,7 +63,6 @@ namespace melblas
             y[r] = beta * y[r] + y_val;
         }
     }
-
 
 
 }

@@ -74,7 +74,7 @@ void conjugate_gradients(const double * A, const double * b, double * x, size_t 
 {
     using namespace melblas;
 
-    ConjugateGradient<double> CG(std::make_unique<MelBLAS_OMP<double>()>);
+    ConjugateGradient<double> CG(std::make_unique<MelBLAS_OMP<double>>());
     CG.solve(A, b, x, size, max_iters, rel_error);
 }
 
